@@ -1,2 +1,31 @@
-i want to be the doctor
-i like to see clara staies with doctor
+统计文本字数
+public static void test() {
+        try {
+            File file = new File("F:\\test.txt");
+            //使用下面这个类可以指明文件的编码方式，这样不会出现乱码
+            InputStreamReader reader = new InputStreamReader(new FileInputStream(file), "gbk");
+            int length = 0;
+            //将\r\n都计算了,算两个
+            //下面的代码可以计算中文字的个数，英文字母的个数
+            while (true) {
+                char[] buffer = new char[8 * 1024];
+                int c = reader.read(buffer, 0, buffer.length);
+                if (c == -1)
+                    break;
+                String str = new String(buffer);
+                //Windows的文件换行以\r\n结尾
+                //下面第一行想要在换行后面添加两个空格，添加或删除多余的空格，但好像没有
+                str = str.replace("\r\n+\\s*","\r\n\u3000\u3000");
+                //将下面一行注释掉，最后的结果是一个大得多的数，而将上面一行注释掉，结果没变化
+                str = str.replace("\u0000","");
+                buffer = str.toCharArray();
+                System.out.print(buffer);
+                length += buffer.length;
+            }
+            reader.close();
+            System.out.println();
+            System.out.println(length);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
